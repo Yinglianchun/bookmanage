@@ -396,9 +396,9 @@ $transition-slow: 0.5s ease;
 
     .charts-grid {
         display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        grid-auto-rows: 520px;
-        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+        grid-auto-rows: minmax(520px, auto);
+        gap: 28px;
 
         .chart-card {
             height: 100%;
@@ -415,8 +415,8 @@ $transition-slow: 0.5s ease;
             flex-direction: column;
 
             &.chart-card-wide {
-                grid-column: span 1;
-                min-height: 520px;
+                grid-column: span 2;
+                min-height: 560px;
             }
 
             &:hover {
@@ -476,6 +476,15 @@ $transition-slow: 0.5s ease;
                 .chart-body {
                     padding: 16px 24px 24px;
                 }
+            }
+        }
+
+        @media (max-width: 1100px) {
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+
+            .chart-card.chart-card-wide {
+                grid-column: span 1;
+                min-height: 520px;
             }
         }
     }

@@ -617,6 +617,14 @@ export default {
 .table-card {
   @include neo.neo-glass-card;
   margin-bottom: 24px;
+
+  // 统一卡片与表单背景，避免出现分层割裂感
+  background: linear-gradient(145deg, rgba(14, 18, 35, 0.92), rgba(20, 27, 48, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  ::v-deep .el-card__body {
+    background: transparent;
+  }
 }
 
 .insights-grid {
@@ -674,8 +682,8 @@ export default {
 }
 
 .filter-form {
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.86), rgba(26, 35, 58, 0.94));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(26, 35, 58, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 16px;
 

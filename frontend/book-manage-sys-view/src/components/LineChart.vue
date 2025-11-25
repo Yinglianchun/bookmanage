@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     hasData() {
-      return this.values && this.values.length > 0 && this.values.some(v => v !== 0 && v !== null && v !== undefined);
+      return this.values && this.values.length > 0 && this.values.some(v => v !== null && v !== undefined);
     }
   },
   watch: {
