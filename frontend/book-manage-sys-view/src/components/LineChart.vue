@@ -1,5 +1,5 @@
 <template>
-  <div class="line-main">
+  <div class="line-main" :style="{ height }">
     <div ref="chart" class="chart-container"></div>
     <!-- 仅在没有数据时显示占位符 -->
     <div v-if="!hasData" class="empty-chart">
