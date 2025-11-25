@@ -1,0 +1,420 @@
+// Shared neo-glass admin theme for the management views
+$neo-font-stack: 'Inter', 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+$neo-page-bg: linear-gradient(135deg, #03050f 0%, #0b1327 55%, #111a32 100%);
+$neo-card-bg: rgba(15, 23, 42, 0.82);
+$neo-panel-bg: rgba(23, 32, 58, 0.9);
+$neo-border: rgba(255, 255, 255, 0.08);
+$neo-border-strong: rgba(79, 209, 197, 0.2);
+$neo-text-primary: #fdfefe;
+$neo-text-secondary: #aeb9d4;
+$neo-text-muted: #7c8fab;
+$neo-green: #34d399;
+$neo-cyan: #36cfc9;
+$neo-blue: #60a5fa;
+$neo-orange: #fda085;
+$neo-red: #fb7185;
+$neo-purple: #c084fc;
+$neo-shadow: 0 20px 50px rgba(3, 9, 29, 0.65);
+
+@mixin neo-typography {
+  font-family: $neo-font-stack;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  color: $neo-text-primary;
+}
+
+@mixin neo-page-shell {
+  min-height: 100vh;
+  padding: 28px;
+  background: $neo-page-bg;
+  position: relative;
+  overflow: hidden;
+  @include neo-typography;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 30%, rgba(96, 165, 250, 0.18), transparent 55%),
+      radial-gradient(circle at 85% 20%, rgba(192, 132, 252, 0.18), transparent 60%),
+      radial-gradient(circle at 50% 80%, rgba(54, 207, 201, 0.14), transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@mixin neo-glass-card {
+  background: $neo-card-bg;
+  border-radius: 24px;
+  border: 1px solid $neo-border;
+  backdrop-filter: blur(26px);
+  box-shadow: $neo-shadow, inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+@mixin neo-section-title($accent: $neo-green) {
+  font-size: 18px;
+  font-weight: 600;
+  color: $neo-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(120deg, $accent, lighten($accent, 18%));
+    box-shadow: 0 0 12px rgba($accent, 0.6);
+  }
+}
+
+@mixin neo-polar-grid {
+  border: 1px solid $neo-border;
+  border-radius: 18px;
+  padding: 22px 26px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+}
+
+@mixin neo-input {
+  ::v-deep .el-input__inner,
+  ::v-deep .el-textarea__inner,
+  ::v-deep .el-range-input {
+    background: rgba(6, 10, 27, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: $neo-text-primary;
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.01);
+    transition: all 0.24s ease;
+
+    &::placeholder {
+      color: $neo-text-muted;
+    }
+
+    &:focus {
+      border-color: $neo-cyan;
+      box-shadow: 0 0 0 2px rgba(54, 207, 201, 0.35);
+    }
+  }
+
+  ::v-deep .el-input-number__increase,
+  ::v-deep .el-input-number__decrease {
+    background: transparent;
+    border: none;
+    color: $neo-text-secondary;
+    font-size: 14px;
+  }
+}
+
+@mixin neo-button($from, $to) {
+  background-image: linear-gradient(135deg, $from 0%, $to 100%);
+  border: none;
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 12px 30px rgba($from, 0.3);
+
+  &:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 18px 40px rgba($from, 0.4);
+  }
+}
+
+@mixin neo-ghost-button {
+  background: transparent;
+  border: 1px solid $neo-border-strong;
+  color: $neo-text-primary;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $neo-cyan;
+    color: $neo-cyan;
+  }
+}
+
+@mixin neo-table {
+  ::v-deep .el-table {
+    background: transparent;
+    color: $neo-text-primary;
+    border: 1px solid $neo-border;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: color 0.2s ease;
+    --table-row-hover-bg-color: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+
+    &::before {
+      display: none !important;
+      background: transparent !important;
+    }
+
+    // 移除所有内部边框伪元素
+    .el-table__inner-wrapper::before {
+      display: none !important;
+      background: transparent !important;
+    }
+
+    th {
+      background: rgba(9, 12, 27, 0.98) !important;
+      color: rgba(244, 248, 255, 0.85);
+      font-weight: 600;
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+      border-right: none !important;
+      border-left: none !important;
+      border-top: none !important;
+      padding: 0;
+
+      .cell {
+        color: inherit;
+        letter-spacing: 0.02em;
+        padding: 14px 18px;
+        box-sizing: border-box;
+      }
+
+      // 选择框列的特殊处理
+      &:first-child .cell {
+        padding: 14px;
+      }
+
+      // 确保居中对齐生效
+      &.is-center .cell {
+        text-align: center;
+      }
+
+      // 确保右对齐生效
+      &.is-right .cell {
+        text-align: right;
+      }
+
+      // 确保左对齐生效
+      &.is-left .cell {
+        text-align: left;
+      }
+    }
+
+    td {
+      border: none !important;
+      border-bottom: none !important;
+      border-right: none !important;
+      border-left: none !important;
+      border-top: none !important;
+      background: rgba(5, 10, 24, 0.82);
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      color: rgba(247, 250, 255, 0.9);
+      padding: 0;
+
+      .cell {
+        color: inherit;
+        padding: 14px 18px;
+        box-sizing: border-box;
+      }
+
+      // 选择框列的特殊处理
+      &:first-child .cell {
+        padding: 14px;
+      }
+
+      // 确保居中对齐生效
+      &.is-center .cell {
+        text-align: center;
+      }
+
+      // 确保右对齐生效
+      &.is-right .cell {
+        text-align: right;
+      }
+
+      // 确保左对齐生效
+      &.is-left .cell {
+        text-align: left;
+      }
+    }
+
+    // 移除所有表格行和单元格的边框
+    tr {
+      border: none !important;
+      
+      td, th {
+        border: none !important;
+        border-right: none !important;
+        border-left: none !important;
+      }
+    }
+
+    // 移除表头和表体的边框
+    .el-table__header-wrapper,
+    .el-table__body-wrapper {
+      .el-table__header,
+      .el-table__body {
+        tr {
+          td, th {
+            border: none !important;
+            border-right: none !important;
+            border-left: none !important;
+          }
+        }
+      }
+    }
+
+    // 确保表头和表体的列宽一致
+    .el-table__header-wrapper {
+      .el-table__header {
+        th {
+          padding: 0;
+        }
+      }
+    }
+
+    .el-table__body-wrapper {
+      .el-table__body {
+        td {
+          padding: 0;
+        }
+      }
+    }
+
+    .el-table__body tr {
+      transition: background 0.12s ease, color 0.12s ease, transform 0.12s ease;
+      position: relative;
+
+      &:hover td,
+      &.hover-row td {
+        background: rgba(5, 10, 24, 0.9) !important;
+        color: rgba(247, 250, 255, 0.92) !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+      }
+
+      &.current-row td {
+        background: rgba(5, 10, 24, 0.9) !important;
+        color: rgba(247, 250, 255, 0.92) !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+
+    &.el-table--striped .el-table__body tr.el-table__row--striped td {
+      background: rgba(5, 10, 24, 0.82);
+    }
+
+    .el-table__body tr.el-table__row--striped:hover td {
+      background: rgba(5, 10, 24, 0.9) !important;
+      box-shadow: none !important;
+      border-color: transparent !important;
+    }
+
+    .table-actions {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+
+      .el-button,
+      button {
+        padding: 0;
+        min-width: 0;
+        border: none;
+        background: transparent;
+        color: rgba(174, 185, 212, 0.9);
+        transition: color 0.08s ease, transform 0.08s ease;
+
+        &:hover {
+          color: $neo-cyan;
+          transform: translateY(-1px);
+        }
+
+        &:active {
+          transform: scale(0.96);
+        }
+      }
+    }
+
+    .el-table__empty-text {
+      color: $neo-text-secondary;
+    }
+  }
+}
+
+@mixin neo-pagination {
+  ::v-deep .el-pagination {
+    color: $neo-text-primary;
+
+    .btn-next,
+    .btn-prev,
+    .el-pager li {
+      background: rgba(6, 11, 27, 0.8);
+      border: 1px solid $neo-border;
+      border-radius: 10px;
+      color: $neo-text-secondary;
+      margin: 0 4px;
+    }
+
+    .el-pager li.active {
+      background: linear-gradient(135deg, $neo-blue, lighten($neo-blue, 10%));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 12px 24px rgba($neo-blue, 0.35);
+    }
+  }
+}
+
+@mixin neo-dialog {
+  ::v-deep .el-dialog {
+    background: $neo-panel-bg;
+    border-radius: 24px;
+    border: 1px solid $neo-border;
+    padding-bottom: 0;
+    box-shadow: $neo-shadow;
+  }
+
+  ::v-deep .el-dialog__header {
+    padding: 22px 28px 14px;
+    border-bottom: 1px solid $neo-border;
+
+    .el-dialog__title {
+      color: $neo-text-primary;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  ::v-deep .el-dialog__body {
+    padding: 26px 28px;
+    color: $neo-text-primary;
+  }
+
+  ::v-deep .el-dialog__footer {
+    padding: 20px 28px 28px;
+    border-top: 1px solid $neo-border;
+  }
+}
+
+@mixin neo-chip($color) {
+  background: rgba($color, 0.1);
+  color: lighten($color, 20%);
+  border: 1px solid rgba($color, 0.2);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

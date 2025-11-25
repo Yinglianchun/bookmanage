@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kmbeast.mapper.BookMapper">
+
+    <insert id="save">
+        INSERT INTO book (name, cover, publisher, author, isbn, num, detail, bookshelf_id, category_id, is_plan_buy, plan_buy_time, create_time)
+        VALUES (#{name}, #{cover}, #{publisher}, #{author}, #{isbn}, #{num}, #{detail}, #{bookshelfId}, #{categoryId}, #{isPlanBuy}, #{planBuyTime}, #{createTime})
+    </insert>
+
+    <update id="update">
+        UPDATE book
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="cover != null and cover != ''">
+                cover = #{cover},
+            </if>
+            <if test="publisher != null and publisher != ''">
+                publisher = #{publisher},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="isbn != null and isbn != ''">
+                isbn = #{isbn},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="detail != null and detail != ''">
+                detail = #{detail},
+            </if>
+            <if test="bookshelfId != null">
+                bookshelf_id = #{bookshelfId},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="isPlanBuy != null">
+                is_plan_buy = #{isPlanBuy},
+            </if>
+            <if test="planBuyTime != null">
+                plan_buy_time = #{planBuyTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM book WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+        SELECT 
+            b.*,
+            bs.floor,
+            bs.area,
+            bs.frame,
+            CONCAT(bs.floor, '-', bs.area, '-', bs.frame) as bookshelfName,
+            c.name as categoryName
+        FROM book b
+        LEFT JOIN bookshelf bs ON b.bookshelf_id = bs.id
+        LEFT JOIN category c ON b.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                b.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="author != null and author != ''">
+                AND b.author LIKE concat('%',#{author},'%')
+            </if>
+            <if test="publisher != null and publisher != ''">
+                AND b.publisher LIKE concat('%',#{publisher},'%')
+            </if>
+            <if test="categoryId != null">  <!-- 文本类型可以直接写=null -->
+                AND b.category_id = #{categoryId}
+            </if>
+            <if test="bookshelfId != null">
+                AND b.bookshelf_id = #{bookshelfId}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND b.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY b.create_time DESC
+        <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="integer">
+        SELECT COUNT(*)
+        FROM book b
+        <where>
+            <if test="name != null and name != ''">
+                b.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="author != null and author != ''">
+                AND b.author LIKE concat('%',#{author},'%')
+            </if>
+            <if test="publisher != null and publisher != ''">
+                AND b.publisher LIKE concat('%',#{publisher},'%')
+            </if>
+            <if test="categoryId != null">
+                AND b.category_id = #{categoryId}
+            </if>
+            <if test="bookshelfId != null">
+                AND b.bookshelf_id = #{bookshelfId}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND b.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="BaseResultMap" type="cn.kmbeast.pojo.vo.BookVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="cover" property="cover"/>
+        <result column="publisher" property="publisher"/>
+        <result column="author" property="author"/>
+        <result column="isbn" property="isbn"/>
+        <result column="num" property="num"/>
+        <result column="detail" property="detail"/>
+        <result column="bookshelf_id" property="bookshelfId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="is_plan_buy" property="isPlanBuy"/>
+        <result column="plan_buy_time" property="planBuyTime"/>
+        <result column="create_time" property="createTime"/>
+        <!-- <result column="bookshelfName" property="bookshelfName"/> -->
+        <result column="area" property="area"/>
+        <result column="floor" property="floor"/>
+        <result column="frame" property="frame"/>
+        <result column="categoryName" property="categoryName"/>
+    </resultMap>
+
+</mapper>
