@@ -16,6 +16,10 @@
       <!-- 图表主体 -->
       <div class="chart-container">
           <div class="chart-wrap" ref="chart" :style="{ background: bag }"></div>
+          <div class="empty-state" v-if="!hasData">
+            <span>暂无数据</span>
+            <span class="hint">暂无统计数据或接口未返回内容</span>
+          </div>
       </div>
 
       <!-- 图例列表 -->
@@ -86,8 +90,11 @@ export default {
     totalValue() {
       return this.chartData.reduce((sum, item) => sum + item.value, 0)
     },
+    hasData() {
+      return this.totalValue > 0
+    },
     focusItem() {
-      if (!this.chartData.length) return null
+      if (!this.chartData.length || !this.hasData) return null
       return this.chartData.reduce((max, item) => (item.value > max.value ? item : max), this.chartData[0])
     },
     focusShare() {
@@ -137,6 +144,23 @@ export default {
           color: this.colorList[index % this.colorList.length]
         }
       }))
+      const hasRealData = data.some(item => item.value > 0)
+      const seriesData = hasRealData
+        ? data
+        : [{
+            value: 1,
+            name: '暂无数据',
+            itemStyle: {
+              color: 'rgba(255, 255, 255, 0.08)'
+            },
+            label: {
+              show: true,
+              color: '#8fa0c2',
+              formatter: '暂无数据',
+              fontSize: 14,
+              fontWeight: '600'
+            }
+          }]
       const option = {
         tooltip: {
           trigger: 'item',
@@ -150,29 +174,29 @@ export default {
         },
         series: [
           {
-            type: 'pie',
-            radius: ['55%', '85%'], 
-            center: ['50%', '50%'],
-            avoidLabelOverlap: true,
-            label: {
+          type: 'pie',
+          radius: ['55%', '85%'],
+          center: ['50%', '50%'],
+          avoidLabelOverlap: true,
+          label: {
               show: false,
               position: 'center'
-            },
-            labelLine: {
-              show: false
-            },
-            data,
-            emphasis: {
-              scale: true,
-              scaleSize: 10,
-              label: {
-                show: true,
-                formatter: '{b}\n{d}%',
-                color: '#fff',
-                fontSize: 16,
-                fontWeight: '600'
-              }
+          },
+          labelLine: {
+            show: false
+          },
+          data: seriesData,
+          emphasis: {
+            scale: true,
+            scaleSize: 10,
+            label: {
+              show: hasRealData,
+              formatter: '{b}\n{d}%',
+              color: '#fff',
+              fontSize: 16,
+              fontWeight: '600'
             }
+          }
           }
         ]
       }
@@ -287,6 +311,24 @@ export default {
     height: 100%;
     position: relative;
     overflow: hidden;
+  }
+
+  .empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(1px);
+    text-align: center;
+
+    .hint {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+    }
   }
 
   .legend {

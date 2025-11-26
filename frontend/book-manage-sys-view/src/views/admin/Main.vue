@@ -23,7 +23,7 @@
         <div class="charts-section">
             <div class="charts-grid">
                 <!-- 用户增长趋势 -->
-                <div class="chart-card">
+                <div class="chart-card chart-card-wide">
                     <div class="chart-header">
                         <h3>用户增长趋势</h3>
                         <div class="chart-controls">
@@ -396,11 +396,9 @@ $transition-slow: 0.5s ease;
 
     .charts-grid {
         display: grid;
-        /* 改为均分两列 */
-        grid-template-columns: 1fr 1fr;
-        /* 增加高度到 550px，因为只有一行了，高一点好看 */
-        grid-template-rows: 550px; 
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+        grid-auto-rows: minmax(520px, auto);
+        gap: 28px;
 
         .chart-card {
             height: 100%;
@@ -415,6 +413,11 @@ $transition-slow: 0.5s ease;
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
+
+            &.chart-card-wide {
+                grid-column: span 2;
+                min-height: 560px;
+            }
 
             &:hover {
                 transform: translateY(-2px);
@@ -453,22 +456,35 @@ $transition-slow: 0.5s ease;
             }
 
             .chart-body {
-                padding: 10px 15px 15px;
+                padding: 14px 18px 18px;
                 flex: 1;
                 height: 100%; /* 明确高度 */
-                min-height: 0; 
+                min-height: 320px;
                 width: 100%;
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                /* 关键：移除 align-items: center，防止子元素在无高度时塌陷 */
+                gap: 6px;
                 justify-content: flex-start;
+                background: radial-gradient(ellipse at top left, rgba(96, 165, 250, 0.08), transparent 40%),
+                    radial-gradient(ellipse at bottom right, rgba(67, 233, 123, 0.08), transparent 45%);
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.06);
             }
 
             &.chart-card-spotlight {
                 .chart-body {
-                    padding: 10px 24px 24px;
+                    padding: 16px 24px 24px;
                 }
+            }
+        }
+
+        @media (max-width: 1100px) {
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+
+            .chart-card.chart-card-wide {
+                grid-column: span 1;
+                min-height: 520px;
             }
         }
     }

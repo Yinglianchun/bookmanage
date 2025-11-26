@@ -617,6 +617,14 @@ export default {
 .table-card {
   @include neo.neo-glass-card;
   margin-bottom: 24px;
+
+  // 统一卡片与表单背景，避免出现分层割裂感
+  background: linear-gradient(145deg, rgba(14, 18, 35, 0.92), rgba(20, 27, 48, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  ::v-deep .el-card__body {
+    background: transparent;
+  }
 }
 
 .insights-grid {
@@ -671,6 +679,34 @@ export default {
 .filters-body {
   margin-top: 20px;
   @include neo.neo-input;
+}
+
+.filter-form {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(26, 35, 58, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+
+  ::v-deep .el-form-item__label {
+    color: neo.$neo-text-secondary;
+    letter-spacing: 0.02em;
+  }
+
+  ::v-deep .el-input__inner,
+  ::v-deep .el-textarea__inner,
+  ::v-deep .el-select .el-input__inner,
+  ::v-deep .el-date-editor {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: neo.$neo-text-primary;
+
+    &:hover,
+    &.is-focus,
+    &:focus {
+      border-color: rgba(96, 165, 250, 0.6);
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.2);
+    }
+  }
 }
 
 .filters-actions {
